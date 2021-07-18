@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'audit',
     'api',
 
+    #project
+    'todo',
 
 ]
 
