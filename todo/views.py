@@ -98,7 +98,6 @@ class TodoChangePassword(PasswordChangeView):
     def get_form(self):
         form = super().get_form()
         form.set_user(self.request.user)
-        messages.success(self.request,"Password changed successfully.")
         return form
        
 
