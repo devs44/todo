@@ -2,6 +2,7 @@ from django.apps import apps
 from django.db import models
 from django.utils import timezone
 
+from django.contrib.auth.models import User
 
 class DateTimeModel(models.Model):
     created_at = models.DateTimeField(
@@ -43,3 +44,28 @@ class Designation(DateTimeModel):
     def __str__(self):
         return self.name
 
+class TodoUser(User):
+    
+    is_todouser = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = ('TodoUser')
+        verbose_name_plural = ('TodoUsers')
+        ordering = ['username']
+    def __str__(self):
+        return self.username
+
+
+class Todo(DateTimeModel):
+    user = models.ForeignKey(TodoUser, on_delete=models.CASCADE,null=True,blank=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(max_length=500)
+    status = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['status']
+        verbose_name = 'Todo'
+        verbose_name_plural = 'Todos'

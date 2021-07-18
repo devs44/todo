@@ -16,7 +16,8 @@ from .forms import (
     LoginForm, 
     SignUpForm, 
     DesignationForm, 
-    UserForm
+    UserForm,
+    TodoForm
 )
 from .mixins import (
     BaseMixin, 
@@ -31,7 +32,7 @@ from .mixins import (
 )
 from audit.mixins import AuditCreateMixin, AuditDeleteMixin, AuditUpdateMixin
 from audit.models import AuditTrail
-from .models import Designation 
+from .models import Designation, Todo 
 from audit.utils import store_audit
 
 User = get_user_model()
@@ -239,3 +240,21 @@ class AuditTrailListView(CustomLoginRequiredMixin, SuperAdminRequiredMixin, List
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.order_by('-created_at')
+
+
+
+class TodoListView(CustomLoginRequiredMixin, SuperAdminRequiredMixin, ListView):
+    model = Todo
+    template_name = 'dashboard/todo/list.html'
+
+class TodoUpdateView(CustomLoginRequiredMixin, NonDeletedListMixin, SuccessMessageMixin, AuditUpdateMixin, UpdateView):
+    form_class = TodoForm
+    model = Todo
+    success_message = "Todo Updated Successfully"
+    success_url = reverse_lazy('dashboard:todos-list')
+    template_name = "dashboard/todo/form.html"
+
+class TodoDeleteView(CustomLoginRequiredMixin, NonDeletedListMixin, SuccessMessageMixin, GetDeleteMixin, AuditDeleteMixin, DeleteView):
+    model = Todo
+    success_message = "Todo Deleted Successfully"
+    success_url = reverse_lazy('dashboard:todos-list')

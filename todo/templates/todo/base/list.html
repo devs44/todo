@@ -1,0 +1,129 @@
+{% extends 'todo/base/index.html' %}
+{% block title %} Home {% endblock %}
+{% block style %}
+{% endblock %}
+{% block content %}
+
+    <div class="header-bar">
+            <div class= "header-title mr-auto">
+                <h1>Welcome {{ request.user }}</h1>
+            </div>
+            <div class="dropdown" style="float:right;">
+                <button class="dropbtn">Actions</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'todo:todo-logout' %}">Logout</a>
+                        <a href="{% url 'todo:todo-change-password' %}">Change Password</a>
+                       
+                    </div>
+            </div>     
+    </div>
+            
+    <div id="search-add-wrapper">
+        <a id="add-link" href="{% url 'todo:todo-create' %}">&#x2b; Add Task</a> 
+    </div>
+           
+
+        <div class="container">
+                <div class="tab">
+                    <ul class="nav nav-tabs">
+                        <li><a data-toggle="tab" href="#listview" class="active">List</a></li>
+                        <li><a data-toggle="tab" href="#tableview" >Table</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active in" id="listview">
+                       {% for todos in todo %}
+                            <div class="task-wrapper">
+                                {% if todos.status %}
+                                    <div class="task-title">
+                                        <div class="task-complete-icon"></div>
+                                            <i><s><a href="{% url 'todo:todo-detail' todos.pk %}" class= "detail-view" data-toggle="modal" data-target="#detailModal">{{ todos }}</a></s></i>
+                                    </div>
+                                {% else %}
+                                    <div class="task-title">
+                                        <div class="task-incomplete-icon"></div>
+                                            <a  href="{% url 'todo:todo-detail' todos.pk %}" class= "detail-view" data-toggle="modal" data-target="#detailModal">{{ todos }}</a>
+                                    </div>
+                                {% endif %}
+                                <div class ="actions">
+                                    <a class="btn-sm btn btn-danger edit-link" data-toggle="tooltip" data-original-title='Edit' href="{% url 'todo:todo-update' todos.pk %}"><i class="fa fa-pencil"> Edit</i></a>
+                                    <a class="btn-sm btn btn-danger delete" data-toggle="tooltip" data-original-title='Delete' href="{% url 'todo:todo-delete' todos.pk %}"><i class="fa fa-trash-o"> Delete</i></a>
+                                </div>
+                            </div>
+                       {% empty %}
+                        <h3>No todos to do</h3>
+                       {% endfor %}
+                    </div>
+                <div id="tableview" class="tab-pane fade">
+                    <table class="table" style="width:100%">
+                        <thead>
+                            <tr><th>Tasks</th></tr>
+                        </thead>
+                        <tbody>
+                        {% for todos in todo %}
+                        <tr>
+                            <td><a href="{% url 'todo:todo-detail' todos.pk %}" class= "detail-view" data-toggle="modal" data-target="#detailModal">{{todos.title}}</a></td>
+                            <td><a class="btn-sm btn btn-danger edit-link" href="{% url 'todo:todo-update' todos.pk %}"><i class="fa fa-pencil"> Edit</i></a></td>
+                            <td><a class="btn-sm btn btn-danger edit-link" href="{% url 'todo:todo-delete' todos.pk %}"><i class="fa fa-trash-o"> Delete</i></a></td>
+                        </tr>
+                        {% empty %}
+                            <h1>Nothing to to-do</h1>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+                </div>
+
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="detailModal" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+$('.delete').click(function(e) {
+        e.preventDefault();
+        swal({
+                title: "Are you sure?",
+                text: "It will permanently deleted !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = $(this).attr('href');
+                    swal(" 'Your file has been deleted.'!", {
+                        icon: "success",
+                    });
+                }
+            });
+    })
+</script>
+
+<script>
+
+$('.detail-view').click( function(e){
+            e.preventDefault();
+            $("#detailModal").modal("show");
+            var url = $(this).attr("href");
+            $.get(url,function (data){
+            $("#detailModal .modal-content").empty().append(data)
+            })
+        })
+</script>
+                    
+{%endblock%}
+

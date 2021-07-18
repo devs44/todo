@@ -1,0 +1,32 @@
+{% extends 'todo/base/index.html' %}
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<div class="header-bar">
+        <h3>Register</h3>
+</div>
+<div class="card-body">
+     <form method="POST">
+        {% csrf_token %}
+            <label>{{form.username.label}}</label>{{form.username}}
+
+            <label>{{form.first_name.label}}</label>{{form.first_name}}
+
+            <label>{{form.last_name.label}}</label>{{form.last_name}}
+
+            <label>{{form.email.label}}</label>{{form.email}}
+
+            <label>{{form.password.label}}</label>{{form.password}}
+
+            <label>{{form.confirm_password.label}}</label>{{form.confirm_password}}
+
+
+
+        <input style="margin-top:10px ;" class="button" type="submit" value="Register">
+    </form>
+<p>Already have an account?<a href="{% url 'todo:todo-login' %}">Login</p>
+</div>
+
+    
+
+{% endblock %}

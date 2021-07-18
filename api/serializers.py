@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from dashboard.models import Designation
+from dashboard.models import Designation, Todo
 
 class DesignationSerializer(serializers.ModelSerializer):
 
@@ -9,5 +9,8 @@ class DesignationSerializer(serializers.ModelSerializer):
         fields = ['name', 'position', 'gender', 'date_of_birth']
 
 
+class TodoSerializer(serializers.ModelSerializer):
 
-
+    class Meta:
+        model = Todo
+        fields = '__all__'

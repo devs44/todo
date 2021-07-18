@@ -35,4 +35,7 @@ urlpatterns=[
         path('users/<int:pk>/status', views.UserStatusView.as_view(), name='users-status'),
         path('users/<int:pk>/password-reset', views.UserPasswordResetView.as_view(), name='users-password-reset'),
 
+        # todo crud
+        path('todos/', views.TodoListView.as_view(), name='todos-list'),
+   
 ]

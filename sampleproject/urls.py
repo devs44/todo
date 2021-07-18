@@ -20,11 +20,18 @@ from django.conf.urls.static import static
 from django.conf import settings
 from dashboard.views import HomeView
 
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomeView.as_view(), name="home"),
+    # path('', HomeView.as_view(), name="home"),
     path('api/',include('api.urls')),
     path('dashboard/',include('dashboard.urls')),
+
+    #project
+   
+    path('', include('todo.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -3,7 +3,7 @@ from django import forms
 from django.utils.html import mark_safe
 
 from .mixins import FormControlMixin 
-from .models import Designation
+from .models import Designation, Todo
 
 
 class SignUpForm(forms.ModelForm):
@@ -137,3 +137,9 @@ class UserForm(FormControlMixin, forms.ModelForm):
             raise forms.ValidationError("User with this email address already exists")
         
         return email
+
+class TodoForm(FormControlMixin, forms.ModelForm):
+
+    class Meta:
+        model = Todo
+        fields = ['title','description','status']

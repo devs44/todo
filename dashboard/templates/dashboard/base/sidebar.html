@@ -47,6 +47,13 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-menu-button" href="{% url 'dashboard:todos-list' %}">
+                                <i class="sidebar-menu-icon sidebar-menu-icon--left fas fa-list-alt"></i>
+                                <span class="sidebar-menu-text"> Todos </span>
+                            </a>
+                        </li>
+
                         {% if request.user|has_groups:'editor' or request.user.is_superuser %}
                         <li class="sidebar-menu-item">
                             <a class="sidebar-menu-button" href="{% url 'dashboard:groups-list' %}">
